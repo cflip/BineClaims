@@ -16,8 +16,11 @@ public class ClaimCommand  {
 	}
 
 	public static int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-		ChunkClaimResult result = ChunkClaimManager.claim(context.getSource().getPlayer());
-		context.getSource().sendFeedback(result.message, true);
+		ServerCommandSource source = context.getSource();
+		if (!source.getWorld().isClient) {
+			ChunkClaimResult result = ChunkClaimManager.claim(source.getPlayer());
+			source.sendFeedback(result.message, true);
+		}
 		return 0;
 	}
 }
