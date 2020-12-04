@@ -1,0 +1,4 @@
+{
+	"command.claim.already_claimed": "This chunk has already been claimed by you or another player",
+	"command.claim.success": "Chunk successfully claimed"
+}

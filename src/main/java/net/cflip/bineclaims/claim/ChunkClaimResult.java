@@ -1,10 +1,11 @@
 package net.cflip.bineclaims.claim;
 
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 public enum ChunkClaimResult {
-	ALREADY_CLAIMED(Text.of("This chunk has already been claimed by you or another player")),
-	SUCCESS(Text.of("Chunk successfully claimed"));
+	ALREADY_CLAIMED(new TranslatableText("command.claim.already_claimed")),
+	SUCCESS(new TranslatableText("command.claim.success"));
 
 	public Text message;
 
