@@ -12,10 +12,10 @@ public class BineClaimsCommand {
 	public static final String NAME = "bclaims";
 
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
-		dispatcher.register(net.minecraft.server.command.CommandManager.literal(NAME)
-			.then(net.minecraft.server.command.CommandManager.literal("claim").executes(BineClaimsCommand::claim))
-			.then(net.minecraft.server.command.CommandManager.literal("owner").executes(BineClaimsCommand::owner))
-			.then(net.minecraft.server.command.CommandManager.literal("guild").then(CommandManager.argument("guildName", StringReader::readString).executes(BineClaimsCommand::guildCreate)))
+		dispatcher.register(CommandManager.literal(NAME)
+			.then(CommandManager.literal("claim").executes(BineClaimsCommand::claim))
+			.then(CommandManager.literal("owner").executes(BineClaimsCommand::owner))
+			.then(CommandManager.literal("guild").then(CommandManager.argument("guildName", StringReader::readString).executes(BineClaimsCommand::guildCreate)))
 		);
 	}
 
