@@ -1,4 +1,6 @@
 {
 	"command.claim.already_claimed": "This chunk has already been claimed by you or another player",
-	"command.claim.success": "Chunk successfully claimed"
+	"command.claim.success": "Chunk successfully claimed",
+	"command.claim.owner": "This chunk is owned by %s",
+	"command.claim.owner_fail": "This chunk does not belong to any player"
 }

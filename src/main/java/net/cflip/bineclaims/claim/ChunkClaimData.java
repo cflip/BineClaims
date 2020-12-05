@@ -11,6 +11,7 @@ public class ChunkClaimData extends PersistentState {
 	public int chunkX, chunkZ;
 	public DimensionType dimension;
 	public UUID owner;
+	public String ownerName;
 
 	public ChunkClaimData(ServerPlayerEntity player) {
 		super(createKey(player.chunkX, player.chunkZ));
@@ -18,6 +19,7 @@ public class ChunkClaimData extends PersistentState {
 		chunkZ = player.chunkZ;
 		dimension = player.world.getDimension();
 		owner = player.getUuid();
+		ownerName = player.getEntityName();
 
 		setDirty(true);
 	}
@@ -31,6 +33,7 @@ public class ChunkClaimData extends PersistentState {
 		chunkX = tag.getInt("chunkX");
 		chunkZ = tag.getInt("chunkZ");
 		owner = tag.getUuid("owner");
+		ownerName = tag.getString("ownerName");
 	}
 
 	@Override
@@ -38,6 +41,7 @@ public class ChunkClaimData extends PersistentState {
 		tag.putInt("chunkX", chunkX);
 		tag.putInt("chunkZ", chunkZ);
 		tag.putUuid("owner", owner);
+		tag.putString("ownerName", ownerName);
 
 		return tag;
 	}
