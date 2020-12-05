@@ -5,7 +5,6 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.cflip.bineclaims.BineClaims;
-import net.cflip.bineclaims.Guild;
 import net.cflip.bineclaims.claim.ChunkClaimManager;
 import net.cflip.bineclaims.claim.ChunkClaimResult;
 import net.minecraft.server.command.CommandManager;
@@ -40,9 +39,9 @@ public class BineClaimsCommand {
 		Text text;
 
 		if (name == null) {
-			text = new TranslatableText("command.claim.owner_fail").formatted(Formatting.RED);
+			text = new TranslatableText("command.owner.fail").formatted(Formatting.RED);
 		} else {
-			text = new TranslatableText("command.claim.owner", name).formatted(Formatting.YELLOW);
+			text = new TranslatableText("command.owner.response", name).formatted(Formatting.YELLOW);
 		}
 
 		context.getSource().sendFeedback(text, false);
@@ -50,15 +49,11 @@ public class BineClaimsCommand {
 	}
 
 	public static int guildCreate(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-		// TODO: Fail this command if player is already part of a guild
-
 		String guildName = context.getArgument("guildName", String.class);
 		ServerPlayerEntity player = context.getSource().getPlayer();
 
-		BineClaims.guildManager.addGuild(new Guild(guildName, player), player);
-
-		// TODO: Add message to language file
-		context.getSource().sendFeedback(Text.of("New guild created: " + guildName), false);
+		Text result = BineClaims.guildManager.createGuild(guildName, player);
+		context.getSource().sendFeedback(result, false);
 		return 0;
 	}
 }
