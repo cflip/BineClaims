@@ -6,7 +6,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.cflip.bineclaims.BineClaims;
 import net.cflip.bineclaims.claim.ChunkClaimManager;
-import net.cflip.bineclaims.claim.ChunkClaimResult;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -28,23 +27,15 @@ public class BineClaimsCommand {
 	public static int claim(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
 		ServerCommandSource source = context.getSource();
 		if (!source.getWorld().isClient) {
-			ChunkClaimResult result = ChunkClaimManager.claim(source.getPlayer());
-			source.sendFeedback(result.message, true);
+			BineClaimsCommandResult result = ChunkClaimManager.claim(source.getPlayer());
+			source.sendFeedback(result.getMessage(), true);
 		}
 		return 0;
 	}
 
 	public static int owner(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-		String name = ChunkClaimManager.getOwner(context.getSource().getPlayer());
-		Text text;
-
-		if (name == null) {
-			text = new TranslatableText("command.owner.fail").formatted(Formatting.RED);
-		} else {
-			text = new TranslatableText("command.owner.response", name).formatted(Formatting.YELLOW);
-		}
-
-		context.getSource().sendFeedback(text, false);
+		BineClaimsCommandResult result = ChunkClaimManager.getOwner(context.getSource().getPlayer());
+		context.getSource().sendFeedback(result.getMessage(), false);
 		return 0;
 	}
 
@@ -52,8 +43,8 @@ public class BineClaimsCommand {
 		String guildName = context.getArgument("guildName", String.class);
 		ServerPlayerEntity player = context.getSource().getPlayer();
 
-		Text result = BineClaims.guildManager.createGuild(guildName, player);
-		context.getSource().sendFeedback(result, false);
+		BineClaimsCommandResult result = BineClaims.guildManager.createGuild(guildName, player);
+		context.getSource().sendFeedback(result.getMessage(), false);
 		return 0;
 	}
 }

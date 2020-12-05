@@ -1,6 +1,6 @@
 package net.cflip.bineclaims;
 
-import net.cflip.bineclaims.claim.ChunkClaimResult;
+import net.cflip.bineclaims.command.BineClaimsCommandResult;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.world.PersistentStateManager;
@@ -25,14 +25,13 @@ public class GuildManager {
 		}
 	}
 
-	public Text createGuild(String newGuildName, ServerPlayerEntity player) {
-		GuildCreateResult result;
+	public BineClaimsCommandResult createGuild(String newGuildName, ServerPlayerEntity player) {
 		PersistentStateManager stateManager = player.getServerWorld().getPersistentStateManager();
 		update(stateManager);
 
 		if (playerGuildMap.containsKey(player.getUuid())) {
-			result = GuildCreateResult.ALREADY_IN_GUILD;
-			return result.getMessage(playerGuildMap.get(player.getUuid()).name);
+			BineClaimsCommandResult.GUILD_ALREADY_IN_GUILD.setArgument(playerGuildMap.get(player.getUuid()).name);
+			return BineClaimsCommandResult.GUILD_ALREADY_IN_GUILD;
 		}
 
 		Guild newGuild = new Guild(newGuildName, counter.getNextGuildId(), player);
@@ -40,22 +39,22 @@ public class GuildManager {
 		stateManager.set(newGuild);
 		playerGuildMap.put(player.getUuid(), newGuild);
 
-		result = GuildCreateResult.SUCCESS;
-		return result.getMessage(newGuildName);
+		BineClaimsCommandResult.GUILD_CREATE.setArgument(newGuildName);
+		return BineClaimsCommandResult.GUILD_CREATE;
 	}
 
-	public ChunkClaimResult claimChunk(ServerPlayerEntity player) {
+	public BineClaimsCommandResult claimChunk(ServerPlayerEntity player) {
 		Guild guild = BineClaims.guildManager.getGuild(player);
 		update(player.getServerWorld().getPersistentStateManager());
 
 		if (guild == null) {
-			return ChunkClaimResult.NOT_IN_GUILD;
+			return BineClaimsCommandResult.CLAIM_NOT_IN_GUILD;
 		} else {
 			guild.setDirty(true);
 			for (Guild i : playerGuildMap.values()) {
 				System.out.println("Checking if guild " + i.name + " already owns chunk.");
 				if (i.hasClaim(player.chunkX, player.chunkZ)) {
-					return ChunkClaimResult.ALREADY_CLAIMED;
+					return BineClaimsCommandResult.CLAIM_ALREADY_CLAIMED;
 				}
 			}
 

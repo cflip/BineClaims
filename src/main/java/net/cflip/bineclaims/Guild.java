@@ -1,7 +1,7 @@
 package net.cflip.bineclaims;
 
 import net.cflip.bineclaims.claim.ChunkClaimData;
-import net.cflip.bineclaims.claim.ChunkClaimResult;
+import net.cflip.bineclaims.command.BineClaimsCommandResult;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -37,14 +37,14 @@ public class Guild extends PersistentState {
 		setDirty(true);
 	}
 
-	public ChunkClaimResult claimChunk(ServerPlayerEntity player) {
+	public BineClaimsCommandResult claimChunk(ServerPlayerEntity player) {
 		ChunkClaimData data = claimDataList.get(getChunkKey(player.chunkX, player.chunkZ));
 
 		if (data != null) {
-			return ChunkClaimResult.ALREADY_CLAIMED;
+			return BineClaimsCommandResult.CLAIM_ALREADY_CLAIMED;
 		} else {
 			claimDataList.put(getChunkKey(player.chunkX, player.chunkZ), new ChunkClaimData(player));
-			return ChunkClaimResult.SUCCESS;
+			return BineClaimsCommandResult.CLAIM_SUCCESS;
 		}
 	}
 
