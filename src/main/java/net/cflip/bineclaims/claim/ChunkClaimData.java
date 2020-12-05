@@ -1,47 +1,55 @@
 package net.cflip.bineclaims.claim;
 
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.Dynamic;
+import net.cflip.bineclaims.BineClaims;
+import net.cflip.bineclaims.Guild;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.world.PersistentState;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 
 import java.util.UUID;
 
-public class ChunkClaimData extends PersistentState {
-	public int chunkX, chunkZ;
-	public DimensionType dimension;
-	public UUID owner;
-	public String ownerName;
+public class ChunkClaimData {
+	public final int chunkX;
+	public final int chunkZ;
+	public final RegistryKey<World> dimension;
+	public final Guild guild;
+	public final UUID owner;
 
 	public ChunkClaimData(ServerPlayerEntity player) {
-		super(createKey(player.chunkX, player.chunkZ));
 		chunkX = player.chunkX;
 		chunkZ = player.chunkZ;
-		dimension = player.world.getDimension();
+		dimension = player.getEntityWorld().getRegistryKey();
 		owner = player.getUuid();
-		ownerName = player.getEntityName();
-
-		setDirty(true);
+		guild = BineClaims.guildManager.getGuild(player);
 	}
 
-	public static String createKey(int chunkX, int chunkZ) {
-		return chunkX + "_" + chunkZ;
-	}
-
-	@Override
-	public void fromTag(CompoundTag tag) {
+	public ChunkClaimData(CompoundTag tag) {
 		chunkX = tag.getInt("chunkX");
 		chunkZ = tag.getInt("chunkZ");
 		owner = tag.getUuid("owner");
-		ownerName = tag.getString("ownerName");
+
+		@SuppressWarnings("deprecation")
+		DataResult<RegistryKey<World>> dimensionTag = DimensionType.method_28521(new Dynamic<>(NbtOps.INSTANCE, tag.get("dimension")));
+		dimension = dimensionTag.getOrThrow(true, s -> {
+			throw new IllegalArgumentException("Invalid map dimension: " + tag.get("dimension"));
+		});
+
+		guild = BineClaims.guildManager.getGuild(owner);
 	}
 
-	@Override
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.putInt("chunkX", chunkX);
 		tag.putInt("chunkZ", chunkZ);
+		DataResult<Tag> dimensionId = Identifier.CODEC.encodeStart(NbtOps.INSTANCE, this.dimension.getValue());
+		dimensionId.map(dimensionTag -> tag.put("dimension", dimensionTag));
 		tag.putUuid("owner", owner);
-		tag.putString("ownerName", ownerName);
 
 		return tag;
 	}
