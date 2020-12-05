@@ -4,7 +4,7 @@
 	"version": "${version}",
 
 	"name": "BineClaims",
-	"description": "A chunk claiming and minimap mod",
+	"description": "A chunk protection, diplomacy simulator and mini-map mod",
 	"authors": [
 		"Cflip_",
 		"jusipat"
