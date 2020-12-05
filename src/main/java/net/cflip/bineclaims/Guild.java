@@ -70,7 +70,6 @@ public class Guild extends PersistentState {
 		for (Tag value : claimsTag) {
 			ChunkClaimData data = new ChunkClaimData((CompoundTag) value);
 			claimDataList.put(getChunkKey(data.chunkX, data.chunkZ), data);
-			System.out.println(name + ": adding chunk " + getChunkKey(data.chunkX, data.chunkZ) + " to list.");
 		}
 	}
 

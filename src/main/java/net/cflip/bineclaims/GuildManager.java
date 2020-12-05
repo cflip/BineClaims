@@ -2,7 +2,6 @@ package net.cflip.bineclaims;
 
 import net.cflip.bineclaims.command.BineClaimsCommandResult;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.world.PersistentStateManager;
 
 import java.util.HashMap;
@@ -52,7 +51,6 @@ public class GuildManager {
 		} else {
 			guild.setDirty(true);
 			for (Guild i : playerGuildMap.values()) {
-				System.out.println("Checking if guild " + i.name + " already owns chunk.");
 				if (i.hasClaim(player.chunkX, player.chunkZ)) {
 					return BineClaimsCommandResult.CLAIM_ALREADY_CLAIMED;
 				}
