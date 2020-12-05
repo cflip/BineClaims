@@ -25,6 +25,7 @@ public class BineClaimsCommand {
 		if (!source.getWorld().isClient) {
 			BineClaimsCommandResult result = ChunkClaimManager.claim(source.getPlayer());
 			source.sendFeedback(result.getMessage(), true);
+			return result.type;
 		}
 		return 0;
 	}
@@ -32,7 +33,7 @@ public class BineClaimsCommand {
 	public static int owner(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
 		BineClaimsCommandResult result = ChunkClaimManager.getOwner(context.getSource().getPlayer());
 		context.getSource().sendFeedback(result.getMessage(), false);
-		return 0;
+		return result.type;
 	}
 
 	public static int guildCreate(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
@@ -42,6 +43,7 @@ public class BineClaimsCommand {
 		if (!source.getWorld().isClient) {
 			BineClaimsCommandResult result = BineClaims.guildManager.createGuild(guildName, source.getPlayer());
 			source.sendFeedback(result.getMessage(), true);
+			return result.type;
 		}
 		return 0;
 	}

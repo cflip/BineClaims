@@ -18,7 +18,7 @@ public enum BineClaimsCommandResult {
 	public static final int FAIL = -1;
 
 	private final String translationKey;
-	private final int type;
+	public final int type;
 
 	private String argument;
 
