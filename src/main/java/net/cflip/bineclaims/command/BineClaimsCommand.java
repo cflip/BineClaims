@@ -8,10 +8,6 @@ import net.cflip.bineclaims.BineClaims;
 import net.cflip.bineclaims.claim.ChunkClaimManager;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 
 public class BineClaimsCommand {
 	public static final String NAME = "bclaims";
@@ -41,10 +37,12 @@ public class BineClaimsCommand {
 
 	public static int guildCreate(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
 		String guildName = context.getArgument("guildName", String.class);
-		ServerPlayerEntity player = context.getSource().getPlayer();
+		ServerCommandSource source = context.getSource();
 
-		BineClaimsCommandResult result = BineClaims.guildManager.createGuild(guildName, player);
-		context.getSource().sendFeedback(result.getMessage(), false);
+		if (!source.getWorld().isClient) {
+			BineClaimsCommandResult result = BineClaims.guildManager.createGuild(guildName, source.getPlayer());
+			source.sendFeedback(result.getMessage(), true);
+		}
 		return 0;
 	}
 }
