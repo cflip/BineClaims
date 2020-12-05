@@ -2,8 +2,6 @@ package net.cflip.bineclaims.claim;
 
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
-import net.cflip.bineclaims.BineClaims;
-import net.cflip.bineclaims.Guild;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
@@ -19,7 +17,6 @@ public class ChunkClaimData {
 	public final int chunkX;
 	public final int chunkZ;
 	public final RegistryKey<World> dimension;
-	public final Guild guild;
 	public final UUID owner;
 
 	public ChunkClaimData(ServerPlayerEntity player) {
@@ -27,7 +24,6 @@ public class ChunkClaimData {
 		chunkZ = player.chunkZ;
 		dimension = player.getEntityWorld().getRegistryKey();
 		owner = player.getUuid();
-		guild = BineClaims.guildManager.getGuild(player);
 	}
 
 	public ChunkClaimData(CompoundTag tag) {
@@ -41,7 +37,6 @@ public class ChunkClaimData {
 			throw new IllegalArgumentException("Invalid map dimension: " + tag.get("dimension"));
 		});
 
-		guild = BineClaims.guildManager.getGuild(owner);
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {

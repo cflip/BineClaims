@@ -1,7 +1,8 @@
 package net.cflip.bineclaims;
 
 import net.cflip.bineclaims.claim.ChunkClaimData;
-import net.cflip.bineclaims.claim.ChunkClaimResult;
+import net.cflip.bineclaims.command.BineClaimsCommandResult;
+import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
@@ -22,8 +23,13 @@ public class Guild extends PersistentState {
 
 	private final Map<String, ChunkClaimData> claimDataList = new HashMap<>();
 
-	public Guild(String name, ServerPlayerEntity player) {
-		super(name);
+	public Guild(int id) {
+		super("guild_" + id);
+		setDirty(true);
+	}
+
+	public Guild(String name, int id, ServerPlayerEntity player) {
+		super("guild_" + id);
 		this.name = name;
 		owner = player.getUuid();
 		members.add(owner);
@@ -31,15 +37,19 @@ public class Guild extends PersistentState {
 		setDirty(true);
 	}
 
-	public ChunkClaimResult claimChunk(ServerPlayerEntity player) {
+	public BineClaimsCommandResult claimChunk(ServerPlayerEntity player) {
 		ChunkClaimData data = claimDataList.get(getChunkKey(player.chunkX, player.chunkZ));
 
 		if (data != null) {
-			return ChunkClaimResult.ALREADY_CLAIMED;
+			return BineClaimsCommandResult.CLAIM_ALREADY_CLAIMED;
 		} else {
 			claimDataList.put(getChunkKey(player.chunkX, player.chunkZ), new ChunkClaimData(player));
-			return ChunkClaimResult.SUCCESS;
+			return BineClaimsCommandResult.CLAIM_SUCCESS;
 		}
+	}
+
+	public boolean hasClaim(int chunkX, int chunkZ) {
+		return claimDataList.containsKey(getChunkKey(chunkX, chunkZ));
 	}
 
 	private static String getChunkKey(int chunkX, int chunkZ) {
@@ -51,12 +61,12 @@ public class Guild extends PersistentState {
 		name = tag.getString("name");
 		owner = tag.getUuid("owner");
 
-		ListTag membersTag = tag.getList("members", 9);
+		ListTag membersTag = tag.getList("members", NbtType.INT_ARRAY);
 		for (Tag value : membersTag) {
 			members.add(NbtHelper.toUuid(value));
 		}
 
-		ListTag claimsTag = tag.getList("claims", 9);
+		ListTag claimsTag = tag.getList("claims", NbtType.COMPOUND);
 		for (Tag value : claimsTag) {
 			ChunkClaimData data = new ChunkClaimData((CompoundTag) value);
 			claimDataList.put(getChunkKey(data.chunkX, data.chunkZ), data);
