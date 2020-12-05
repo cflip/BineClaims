@@ -5,7 +5,6 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.cflip.bineclaims.BineClaims;
-import net.cflip.bineclaims.claim.ChunkClaimManager;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
@@ -23,7 +22,7 @@ public class BineClaimsCommand {
 	public static int claim(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
 		ServerCommandSource source = context.getSource();
 		if (!source.getWorld().isClient) {
-			BineClaimsCommandResult result = ChunkClaimManager.claim(source.getPlayer());
+			BineClaimsCommandResult result = BineClaims.guildManager.claimChunk(source.getPlayer());
 			source.sendFeedback(result.getMessage(), true);
 			return result.type;
 		}
@@ -31,7 +30,7 @@ public class BineClaimsCommand {
 	}
 
 	public static int owner(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-		BineClaimsCommandResult result = ChunkClaimManager.getOwner(context.getSource().getPlayer());
+		BineClaimsCommandResult result = BineClaims.guildManager.getOwner(context.getSource().getPlayer());
 		context.getSource().sendFeedback(result.getMessage(), false);
 		return result.type;
 	}

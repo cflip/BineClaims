@@ -60,6 +60,18 @@ public class GuildManager {
 		}
 	}
 
+	public BineClaimsCommandResult getOwner(ServerPlayerEntity player) {
+		update(player.getServerWorld().getPersistentStateManager());
+
+		for (Guild i : playerGuildMap.values()) {
+			if (i.hasClaim(player.chunkX, player.chunkZ)) {
+				BineClaimsCommandResult.OWNER_RESPONSE.setArgument(i.name);
+				return BineClaimsCommandResult.OWNER_RESPONSE;
+			}
+		}
+		return BineClaimsCommandResult.OWNER_FAIL;
+	}
+
 	public Guild getGuild(ServerPlayerEntity player) {
 		return playerGuildMap.get(player.getUuid());
 	}
