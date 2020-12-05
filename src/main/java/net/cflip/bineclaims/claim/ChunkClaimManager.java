@@ -1,25 +1,20 @@
 package net.cflip.bineclaims.claim;
 
 import net.minecraft.server.network.ServerPlayerEntity;
-
-import java.util.HashMap;
-import java.util.Map;
+import net.minecraft.world.PersistentStateManager;
 
 public class ChunkClaimManager {
-	public static Map<String, ChunkClaimData> dataMap = new HashMap<>();
-
 	public static ChunkClaimResult claim(ServerPlayerEntity player) {
-		ChunkClaimData data = dataMap.get(createKey(player.chunkX, player.chunkZ));
+		String key = ChunkClaimData.createKey(player.chunkX, player.chunkZ);
+		PersistentStateManager stateManager = player.getServerWorld().getPersistentStateManager();
+
+		ChunkClaimData data = stateManager.get(() -> new ChunkClaimData(player), key);
 
 		if (data != null) {
 			return ChunkClaimResult.ALREADY_CLAIMED;
 		} else {
-			dataMap.put(createKey(player.chunkX, player.chunkZ), new ChunkClaimData(player));
+			stateManager.set(new ChunkClaimData(player));
 			return ChunkClaimResult.SUCCESS;
 		}
-	}
-
-	public static String createKey(int chunkX, int chunkZ) {
-		return chunkX + ":" + chunkZ;
 	}
 }
