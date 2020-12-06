@@ -15,7 +15,7 @@ public class BineClaimsCommand {
 		dispatcher.register(CommandManager.literal(NAME)
 			.then(CommandManager.literal("claim").executes(BineClaimsCommand::claim))
 			.then(CommandManager.literal("owner").executes(BineClaimsCommand::owner))
-			.then(CommandManager.literal("guild").then(CommandManager.argument("guildName", StringReader::readString).executes(BineClaimsCommand::guildCreate)))
+			.then(CommandManager.literal("guild").then(CommandManager.argument("guildName", StringReader::readQuotedString).executes(BineClaimsCommand::guildCreate)))
 		);
 	}
 
