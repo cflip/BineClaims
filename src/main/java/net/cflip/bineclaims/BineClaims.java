@@ -19,7 +19,6 @@ public class BineClaims implements ModInitializer {
 		AttackBlockCallback.EVENT.register((playerEntity, world, hand, blockPos, direction) -> {
 			if (!world.isClient) {
 				ServerPlayerEntity serverPlayer = (ServerPlayerEntity) playerEntity;
-				System.out.println(serverPlayer.getUuidAsString());
 
 				if (guildManager.canInteract(serverPlayer)) {
 					return ActionResult.PASS;
