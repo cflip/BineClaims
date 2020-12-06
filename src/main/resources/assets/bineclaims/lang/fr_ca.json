@@ -3,7 +3,7 @@
   "command.claim.not_in_guild": "Vous devez être dans un guild à réclamer ce chunk",
   "command.claim.success": "Chunk réclamé avec succès",
   "command.owner.response": "Ce chunk est appartenant à '%s'",
-  "command.claim.owner_fail": "Ce chunk n'appartient à personne",
+  "command.owner.fail": "Ce chunk n'appartient à personne",
   "command.guild.create": "Une nouvelle guilde est créé",
   "command.guild.already_in_guild": "Impossible de créér cette guilde, vous êtes déjà dans la guilde '%s'"
 }

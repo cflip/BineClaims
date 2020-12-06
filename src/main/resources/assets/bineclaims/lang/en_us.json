@@ -2,7 +2,7 @@
 	"command.claim.already_claimed": "This chunk has already been claimed by you or another player",
 	"command.claim.not_in_guild": "You must be in a guild to claim land",
 	"command.claim.success": "Chunk successfully claimed",
-	"command.owner.response": "This chunk is owned by %s",
+	"command.owner.response": "This chunk is owned by '%s'",
 	"command.owner.fail": "This chunk does not belong to any player",
 	"command.guild.create": "New guild %s has been created",
 	"command.guild.already_in_guild": "Cannot create new guild, you are already part of %s"
