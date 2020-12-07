@@ -5,8 +5,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.PersistentStateManager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class GuildManager {
 	private final Map<UUID, Guild> playerGuildMap = new HashMap<>();
@@ -29,8 +33,8 @@ public class GuildManager {
 		update(stateManager);
 
 		if (playerGuildMap.containsKey(player.getUuid())) {
-			BineClaimsCommandResult.GUILD_ALREADY_IN_GUILD.setArgument(playerGuildMap.get(player.getUuid()).name);
-			return BineClaimsCommandResult.GUILD_ALREADY_IN_GUILD;
+			BineClaimsCommandResult.GUILD_CREATE_ALREADY_IN_GUILD.setArgument(playerGuildMap.get(player.getUuid()).name);
+			return BineClaimsCommandResult.GUILD_CREATE_ALREADY_IN_GUILD;
 		}
 
 		Guild newGuild = new Guild(newGuildName, counter.getNextGuildId(), player);
@@ -38,12 +42,30 @@ public class GuildManager {
 		stateManager.set(newGuild);
 		playerGuildMap.put(player.getUuid(), newGuild);
 
-		BineClaimsCommandResult.GUILD_CREATE.setArgument(newGuildName);
-		return BineClaimsCommandResult.GUILD_CREATE;
+		BineClaimsCommandResult.GUILD_CREATE_SUCCESS.setArgument(newGuildName);
+		return BineClaimsCommandResult.GUILD_CREATE_SUCCESS;
+	}
+
+	public BineClaimsCommandResult joinGuild(String guildName, ServerPlayerEntity player) {
+		update(player.getServerWorld().getPersistentStateManager());
+
+		// TODO: Replace loops with stream API function
+		for (Guild guild : playerGuildMap.values()) {
+			if (guild.members.contains(player.getUuid())) {
+				if (!guild.name.equals(guildName)) {
+					BineClaimsCommandResult.GUILD_JOIN_ALREADY_IN_GUILD.setArgument(guild.name);
+					return BineClaimsCommandResult.GUILD_JOIN_ALREADY_IN_GUILD;
+				}
+			}
+		}
+
+		getGuildByName(guildName).ifPresent(guild -> guild.addMember(player));
+		BineClaimsCommandResult.GUILD_JOIN_SUCCESS.setArgument(guildName);
+		return BineClaimsCommandResult.GUILD_JOIN_SUCCESS;
 	}
 
 	public BineClaimsCommandResult claimChunk(ServerPlayerEntity player) {
-		Guild guild = BineClaims.guildManager.getGuild(player);
+		Guild guild = BineClaims.guildManager.getGuildByPlayer(player);
 		update(player.getServerWorld().getPersistentStateManager());
 
 		if (guild == null) {
@@ -84,7 +106,22 @@ public class GuildManager {
 		return BineClaimsCommandResult.OWNER_FAIL;
 	}
 
-	public Guild getGuild(ServerPlayerEntity player) {
+	public Guild getGuildByPlayer(ServerPlayerEntity player) {
 		return playerGuildMap.get(player.getUuid());
+	}
+
+	public Optional<Guild> getGuildByName(String name) {
+		return playerGuildMap.values()
+			.stream()
+			.filter(guild -> guild.name.equals(name))
+			.findFirst();
+	}
+
+	public List<String> getGuildNames() {
+		return playerGuildMap.values()
+			.stream()
+			.filter(Objects::nonNull)
+			.map(guild -> guild.name)
+			.collect(Collectors.toList());
 	}
 }

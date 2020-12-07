@@ -4,6 +4,10 @@
 	"command.claim.success": "Chunk successfully claimed",
 	"command.owner.response": "This chunk is owned by '%s'",
 	"command.owner.fail": "This chunk does not belong to any player",
-	"command.guild.create": "New guild %s has been created",
-	"command.guild.already_in_guild": "Cannot create new guild, you are already part of %s"
+	"command.guild.create.success": "New guild %s has been created",
+	"command.guild.create.already_in_guild": "Cannot create new guild, you are already part of %s",
+	"command.guild.join.success": "You have joined guild %s!",
+	"command.guild.join.already_in_guild": "Cannot join guild, you are already part of %s",
+
+	"arguments.guild.not_found": "Could not find guild with name %s"
 }

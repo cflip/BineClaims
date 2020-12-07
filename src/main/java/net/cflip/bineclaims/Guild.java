@@ -48,6 +48,11 @@ public class Guild extends PersistentState {
 		}
 	}
 
+	public void addMember(ServerPlayerEntity player) {
+		members.add(player.getUuid());
+		setDirty(true);
+	}
+
 	public boolean hasClaim(int chunkX, int chunkZ) {
 		return claimDataList.containsKey(getChunkKey(chunkX, chunkZ));
 	}
