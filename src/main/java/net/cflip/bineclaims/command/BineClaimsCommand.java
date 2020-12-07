@@ -1,7 +1,7 @@
 package net.cflip.bineclaims.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.cflip.bineclaims.BineClaims;
@@ -15,7 +15,7 @@ public class BineClaimsCommand {
 			.then(CommandManager.literal("claim").executes(BineClaimsCommand::claim))
 			.then(CommandManager.literal("owner").executes(BineClaimsCommand::owner))
 			.then(CommandManager.literal("guild")
-				.then(CommandManager.literal("create").then(CommandManager.argument("name", StringReader::readQuotedString).executes(BineClaimsCommand::guildCreate)))
+				.then(CommandManager.literal("create").then(CommandManager.argument("name", StringArgumentType.greedyString()).executes(BineClaimsCommand::guildCreate)))
 				.then(CommandManager.literal("join").then(CommandManager.argument("guild", new GuildArgumentType()).executes(BineClaimsCommand::guildJoin)))
 		));
 	}
@@ -37,7 +37,7 @@ public class BineClaimsCommand {
 	}
 
 	public static int guildCreate(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-		String guildName = context.getArgument("name", String.class);
+		String guildName = GuildArgumentType.checkName(context, "name");
 		ServerCommandSource source = context.getSource();
 
 		if (!source.getWorld().isClient) {
