@@ -1,6 +1,5 @@
-package net.cflip.bineclaims;
+package net.cflip.bineclaims.guild;
 
-import net.cflip.bineclaims.claim.ChunkClaimData;
 import net.cflip.bineclaims.command.BineClaimsCommandResult;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.nbt.CompoundTag;

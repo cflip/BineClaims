@@ -8,7 +8,7 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.cflip.bineclaims.BineClaims;
-import net.cflip.bineclaims.Guild;
+import net.cflip.bineclaims.guild.Guild;
 import net.minecraft.text.TranslatableText;
 
 import java.util.Optional;

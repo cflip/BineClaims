@@ -1,5 +1,6 @@
-package net.cflip.bineclaims;
+package net.cflip.bineclaims.guild;
 
+import net.cflip.bineclaims.BineClaims;
 import net.cflip.bineclaims.command.BineClaimsCommandResult;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.PersistentStateManager;

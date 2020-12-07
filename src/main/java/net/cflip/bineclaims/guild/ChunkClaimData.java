@@ -1,4 +1,4 @@
-package net.cflip.bineclaims.claim;
+package net.cflip.bineclaims.guild;
 
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
