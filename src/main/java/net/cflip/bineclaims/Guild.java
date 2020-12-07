@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Guild extends PersistentState {
 	public String name;
 	public UUID owner;
-	public final List<UUID> members = new ArrayList<>();
+	private final List<UUID> members = new ArrayList<>();
 
 	private final Map<String, ChunkClaimData> claimDataList = new HashMap<>();
 
@@ -44,6 +44,7 @@ public class Guild extends PersistentState {
 			return BineClaimsCommandResult.CLAIM_ALREADY_CLAIMED;
 		} else {
 			claimDataList.put(getChunkKey(player.chunkX, player.chunkZ), new ChunkClaimData(player));
+			setDirty(true);
 			return BineClaimsCommandResult.CLAIM_SUCCESS;
 		}
 	}
@@ -51,6 +52,10 @@ public class Guild extends PersistentState {
 	public void addMember(ServerPlayerEntity player) {
 		members.add(player.getUuid());
 		setDirty(true);
+	}
+
+	public boolean isMember(ServerPlayerEntity player) {
+		return members.contains(player.getUuid());
 	}
 
 	public boolean hasClaim(int chunkX, int chunkZ) {
