@@ -1,6 +1,5 @@
-package net.cflip.bineclaims;
+package net.cflip.bineclaims.guild;
 
-import net.cflip.bineclaims.claim.ChunkClaimData;
 import net.cflip.bineclaims.command.BineClaimsCommandResult;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +18,7 @@ import java.util.UUID;
 public class Guild extends PersistentState {
 	public String name;
 	public UUID owner;
-	public final List<UUID> members = new ArrayList<>();
+	private final List<UUID> members = new ArrayList<>();
 
 	private final Map<String, ChunkClaimData> claimDataList = new HashMap<>();
 
@@ -44,8 +43,18 @@ public class Guild extends PersistentState {
 			return BineClaimsCommandResult.CLAIM_ALREADY_CLAIMED;
 		} else {
 			claimDataList.put(getChunkKey(player.chunkX, player.chunkZ), new ChunkClaimData(player));
+			setDirty(true);
 			return BineClaimsCommandResult.CLAIM_SUCCESS;
 		}
+	}
+
+	public void addMember(ServerPlayerEntity player) {
+		members.add(player.getUuid());
+		setDirty(true);
+	}
+
+	public boolean isMember(ServerPlayerEntity player) {
+		return members.contains(player.getUuid());
 	}
 
 	public boolean hasClaim(int chunkX, int chunkZ) {

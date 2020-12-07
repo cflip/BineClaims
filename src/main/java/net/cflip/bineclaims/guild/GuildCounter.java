@@ -1,4 +1,4 @@
-package net.cflip.bineclaims;
+package net.cflip.bineclaims.guild;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.PersistentState;
