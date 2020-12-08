@@ -22,15 +22,11 @@ public enum BineClaimsCommandResult {
 	private final String translationKey;
 	public final int type;
 
-	private String argument;
+	public String argument;
 
 	BineClaimsCommandResult(String translationKey, int type) {
 		this.translationKey = translationKey;
 		this.type = type;
-	}
-
-	public void setArgument(String argument) {
-		this.argument = argument;
 	}
 
 	public Text getMessage() {

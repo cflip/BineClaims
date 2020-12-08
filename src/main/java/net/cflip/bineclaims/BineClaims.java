@@ -8,7 +8,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Formatting;
 
 public class BineClaims implements ModInitializer {
 	public static GuildManager guildManager;
@@ -24,6 +26,11 @@ public class BineClaims implements ModInitializer {
 				if (guildManager.canInteract(serverPlayer, blockPos)) {
 					return ActionResult.PASS;
 				} else {
+					int chunkX = (int) Math.floor(blockPos.getX() / 16f);
+					int chunkZ = (int) Math.floor(blockPos.getZ() / 16f);
+					String arg = guildManager.getOwner(chunkX, chunkZ).argument;
+
+					serverPlayer.sendMessage(new TranslatableText("event.block_break.blocked", arg).formatted(Formatting.RED), true);
 					return ActionResult.FAIL;
 				}
 			}
@@ -37,6 +44,11 @@ public class BineClaims implements ModInitializer {
 				if (guildManager.canInteract(serverPlayer, blockPos.getBlockPos())) {
 					return ActionResult.PASS;
 				} else {
+					int chunkX = (int) Math.floor(blockPos.getBlockPos().getX() / 16f);
+					int chunkZ = (int) Math.floor(blockPos.getBlockPos().getZ() / 16f);
+					String arg = guildManager.getOwner(chunkX, chunkZ).argument;
+
+					serverPlayer.sendMessage(new TranslatableText("event.block_use.blocked", arg).formatted(Formatting.RED), true);
 					return ActionResult.FAIL;
 				}
 			}

@@ -10,5 +10,8 @@
 	"command.guild.join.already_in_guild": "Cannot join guild, you are already part of %s",
 
 	"arguments.guild.not_found": "Could not find guild with name %s",
-	"arguments.guild.existing_name": "Can't create guild, the name '%s' is already taken"
+	"arguments.guild.existing_name": "Can't create guild, the name '%s' is already taken",
+
+	"event.block_break.blocked": "This chunk belongs to %s, you can't break blocks here",
+	"event.block_use.blocked": "This chunk belongs to %s, you can't use blocks here"
 }
