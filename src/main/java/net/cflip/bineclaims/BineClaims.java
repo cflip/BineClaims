@@ -15,15 +15,13 @@ public class BineClaims implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			guildManager = new GuildManager(server.getOverworld().getPersistentStateManager());
-		});
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> guildManager = new GuildManager(server.getOverworld().getPersistentStateManager()));
 
 		AttackBlockCallback.EVENT.register((playerEntity, world, hand, blockPos, direction) -> {
 			if (!world.isClient) {
 				ServerPlayerEntity serverPlayer = (ServerPlayerEntity) playerEntity;
 
-				if (guildManager.canInteract(serverPlayer)) {
+				if (guildManager.canInteract(serverPlayer, blockPos)) {
 					return ActionResult.PASS;
 				} else {
 					return ActionResult.FAIL;
@@ -36,7 +34,7 @@ public class BineClaims implements ModInitializer {
 			if (!world.isClient) {
 				ServerPlayerEntity serverPlayer = (ServerPlayerEntity) playerEntity;
 
-				if (guildManager.canInteract(serverPlayer)) {
+				if (guildManager.canInteract(serverPlayer, blockPos.getBlockPos())) {
 					return ActionResult.PASS;
 				} else {
 					return ActionResult.FAIL;

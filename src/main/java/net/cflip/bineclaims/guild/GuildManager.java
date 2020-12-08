@@ -3,6 +3,7 @@ package net.cflip.bineclaims.guild;
 import net.cflip.bineclaims.BineClaims;
 import net.cflip.bineclaims.command.BineClaimsCommandResult;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.PersistentStateManager;
 
 import java.util.ArrayList;
@@ -72,9 +73,12 @@ public class GuildManager {
 		}
 	}
 
-	public boolean canInteract(ServerPlayerEntity player) {
+	public boolean canInteract(ServerPlayerEntity player, BlockPos blockPos) {
 		for (Guild i : guilds) {
-			if (i.hasClaim(player.chunkX, player.chunkZ) && !i.isMember(player)) {
+			int chunkX = (int) Math.floor(blockPos.getX() / 16f);
+			int chunkZ = (int) Math.floor(blockPos.getZ() / 16f);
+
+			if (i.hasClaim(chunkX, chunkZ) && !i.isMember(player)) {
 				return false;
 			}
 		}
