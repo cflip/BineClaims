@@ -41,7 +41,8 @@ public class GuildInterface {
 
 		Optional<Guild> guild = BineClaims.guildManager.getGuildByPlayer(player);
 		if (guild.isPresent()) {
-			return guild.get().claimChunk(player);
+			guild.get().claimChunk(player);
+			return BineClaimsCommandResult.CLAIM_SUCCESS;
 		} else {
 			return BineClaimsCommandResult.CLAIM_NOT_IN_GUILD;
 		}
