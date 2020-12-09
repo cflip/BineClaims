@@ -3,6 +3,7 @@ package net.cflip.bineclaims.guild;
 import net.cflip.bineclaims.BineClaims;
 import net.cflip.bineclaims.command.BineClaimsCommandResult;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.PersistentStateManager;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class GuildManager {
 
 	public BineClaimsCommandResult createGuild(String newGuildName, ServerPlayerEntity player) {
 		if (getGuildByPlayer(player).isPresent()) {
-			BineClaimsCommandResult.GUILD_CREATE_ALREADY_IN_GUILD.setArgument(getGuildByPlayer(player).get().name);
+			BineClaimsCommandResult.GUILD_CREATE_ALREADY_IN_GUILD.argument = getGuildByPlayer(player).get().name;
 			return BineClaimsCommandResult.GUILD_CREATE_ALREADY_IN_GUILD;
 		}
 
@@ -36,7 +37,7 @@ public class GuildManager {
 		player.getServerWorld().getPersistentStateManager().set(newGuild);
 		guilds.add(newGuild);
 
-		BineClaimsCommandResult.GUILD_CREATE_SUCCESS.setArgument(newGuildName);
+		BineClaimsCommandResult.GUILD_CREATE_SUCCESS.argument = newGuildName;
 		return BineClaimsCommandResult.GUILD_CREATE_SUCCESS;
 	}
 
@@ -45,14 +46,14 @@ public class GuildManager {
 		for (Guild guild : guilds) {
 			if (guild.isMember(player)) {
 				if (!guild.name.equals(guildName)) {
-					BineClaimsCommandResult.GUILD_JOIN_ALREADY_IN_GUILD.setArgument(guild.name);
+					BineClaimsCommandResult.GUILD_JOIN_ALREADY_IN_GUILD.argument = guild.name;
 					return BineClaimsCommandResult.GUILD_JOIN_ALREADY_IN_GUILD;
 				}
 			}
 		}
 
 		getGuildByName(guildName).ifPresent(guild -> guild.addMember(player));
-		BineClaimsCommandResult.GUILD_JOIN_SUCCESS.setArgument(guildName);
+		BineClaimsCommandResult.GUILD_JOIN_SUCCESS.argument = guildName;
 		return BineClaimsCommandResult.GUILD_JOIN_SUCCESS;
 	}
 
@@ -72,19 +73,22 @@ public class GuildManager {
 		}
 	}
 
-	public boolean canInteract(ServerPlayerEntity player) {
+	public boolean canInteract(ServerPlayerEntity player, BlockPos blockPos) {
 		for (Guild i : guilds) {
-			if (i.hasClaim(player.chunkX, player.chunkZ) && !i.isMember(player)) {
+			int chunkX = (int) Math.floor(blockPos.getX() / 16f);
+			int chunkZ = (int) Math.floor(blockPos.getZ() / 16f);
+
+			if (i.hasClaim(chunkX, chunkZ) && !i.isMember(player)) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	public BineClaimsCommandResult getOwner(ServerPlayerEntity player) {
+	public BineClaimsCommandResult getOwner(int chunkX, int chunkZ) {
 		for (Guild i : guilds) {
-			if (i.hasClaim(player.chunkX, player.chunkZ)) {
-				BineClaimsCommandResult.OWNER_RESPONSE.setArgument(i.name);
+			if (i.hasClaim(chunkX, chunkZ)) {
+				BineClaimsCommandResult.OWNER_RESPONSE.argument = i.name;
 				return BineClaimsCommandResult.OWNER_RESPONSE;
 			}
 		}

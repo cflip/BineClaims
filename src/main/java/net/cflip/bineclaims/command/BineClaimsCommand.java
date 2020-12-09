@@ -8,6 +8,7 @@ import net.cflip.bineclaims.BineClaims;
 import net.cflip.bineclaims.guild.Guild;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public class BineClaimsCommand {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
@@ -31,7 +32,8 @@ public class BineClaimsCommand {
 	}
 
 	public static int owner(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-		BineClaimsCommandResult result = BineClaims.guildManager.getOwner(context.getSource().getPlayer());
+		ServerPlayerEntity player = context.getSource().getPlayer();
+		BineClaimsCommandResult result = BineClaims.guildManager.getOwner(player.chunkX, player.chunkZ);
 		context.getSource().sendFeedback(result.getMessage(), false);
 		return result.type;
 	}
