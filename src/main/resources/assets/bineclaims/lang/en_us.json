@@ -1,17 +1,17 @@
 {
-	"command.claim.already_claimed": "This chunk has already been claimed by you or another player",
-	"command.claim.not_in_guild": "You must be in a guild to claim land",
-	"command.claim.success": "Chunk successfully claimed",
+	"command.claim.already_claimed": "This chunk has already been claimed by you or another player!",
+	"command.claim.not_in_guild": "You must be in a Guild to claim chunks!",
+	"command.claim.success": "Chunk successfully claimed!",
 	"command.owner.response": "This chunk is owned by '%s'",
-	"command.owner.fail": "This chunk does not belong to any player",
-	"command.guild.create.success": "New guild %s has been created",
-	"command.guild.create.already_in_guild": "Cannot create new guild, you are already part of %s",
-	"command.guild.join.success": "You have joined guild %s!",
-	"command.guild.join.already_in_guild": "Cannot join guild, you are already part of %s",
+	"command.owner.fail": "This chunk doesn't belong to any player!",
+	"command.guild.create.success": "New Guild %s has been successfully created!",
+	"command.guild.create.already_in_guild": "Cannot create new Guild, you are already apart of %s!",
+	"command.guild.join.success": "You have joined Guild %s!",
+	"command.guild.join.already_in_guild": "Cannot join Guild, you are already apart of %s!",
 
-	"arguments.guild.not_found": "Could not find guild with name %s",
-	"arguments.guild.existing_name": "Can't create guild, the name '%s' is already taken",
+	"arguments.guild.not_found": "Could not find Guild with name %s",
+	"arguments.guild.existing_name": "Could not create Guild, Guild name '%s' is already taken",
 
-	"event.block_break.blocked": "This chunk belongs to %s, you can't break blocks here",
-	"event.block_use.blocked": "This chunk belongs to %s, you can't use blocks here"
+	"event.block_break.blocked": "This chunk belongs to %s, you can't break blocks here!",
+	"event.block_use.blocked": "This chunk belongs to %s, you can't use blocks here!"
 }
