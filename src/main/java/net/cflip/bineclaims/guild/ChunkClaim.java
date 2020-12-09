@@ -13,20 +13,20 @@ import net.minecraft.world.dimension.DimensionType;
 
 import java.util.UUID;
 
-public class ChunkClaimData {
+public class ChunkClaim {
 	public final int chunkX;
 	public final int chunkZ;
 	public final RegistryKey<World> dimension;
 	public final UUID owner;
 
-	public ChunkClaimData(ServerPlayerEntity player) {
+	public ChunkClaim(ServerPlayerEntity player) {
 		chunkX = player.chunkX;
 		chunkZ = player.chunkZ;
 		dimension = player.getEntityWorld().getRegistryKey();
 		owner = player.getUuid();
 	}
 
-	public ChunkClaimData(CompoundTag tag) {
+	public ChunkClaim(CompoundTag tag) {
 		chunkX = tag.getInt("chunkX");
 		chunkZ = tag.getInt("chunkZ");
 		owner = tag.getUuid("owner");
@@ -34,9 +34,13 @@ public class ChunkClaimData {
 		@SuppressWarnings("deprecation")
 		DataResult<RegistryKey<World>> dimensionTag = DimensionType.method_28521(new Dynamic<>(NbtOps.INSTANCE, tag.get("dimension")));
 		dimension = dimensionTag.getOrThrow(true, s -> {
-			throw new IllegalArgumentException("Invalid map dimension: " + tag.get("dimension"));
+			throw new IllegalArgumentException("Invalid dimension: " + tag.get("dimension"));
 		});
 
+	}
+
+	public boolean isWithinBounds(int chunkX, int chunkZ) {
+		return (chunkX == this.chunkX) && (chunkZ == this.chunkZ);
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {
