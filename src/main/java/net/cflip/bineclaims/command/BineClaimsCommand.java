@@ -4,8 +4,8 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.cflip.bineclaims.BineClaims;
 import net.cflip.bineclaims.guild.Guild;
+import net.cflip.bineclaims.guild.GuildInterface;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -24,7 +24,7 @@ public class BineClaimsCommand {
 	public static int claim(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
 		ServerCommandSource source = context.getSource();
 		if (!source.getWorld().isClient) {
-			BineClaimsCommandResult result = BineClaims.guildManager.claimChunk(source.getPlayer());
+			BineClaimsCommandResult result = GuildInterface.claimChunk(source.getPlayer());
 			source.sendFeedback(result.getMessage(), true);
 			return result.type;
 		}
@@ -33,7 +33,7 @@ public class BineClaimsCommand {
 
 	public static int owner(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
 		ServerPlayerEntity player = context.getSource().getPlayer();
-		BineClaimsCommandResult result = BineClaims.guildManager.getOwner(player.chunkX, player.chunkZ);
+		BineClaimsCommandResult result = GuildInterface.getOwner(player.chunkX, player.chunkZ);
 		context.getSource().sendFeedback(result.getMessage(), false);
 		return result.type;
 	}
@@ -43,7 +43,7 @@ public class BineClaimsCommand {
 		ServerCommandSource source = context.getSource();
 
 		if (!source.getWorld().isClient) {
-			BineClaimsCommandResult result = BineClaims.guildManager.createGuild(guildName, source.getPlayer());
+			BineClaimsCommandResult result = GuildInterface.createGuild(guildName, source.getPlayer());
 			source.sendFeedback(result.getMessage(), true);
 			return result.type;
 		}
@@ -55,7 +55,7 @@ public class BineClaimsCommand {
 		ServerCommandSource source = context.getSource();
 
 		if (!source.getWorld().isClient) {
-			BineClaimsCommandResult result = BineClaims.guildManager.joinGuild(guild.name, source.getPlayer());
+			BineClaimsCommandResult result = GuildInterface.joinGuild(guild.name, source.getPlayer());
 			source.sendFeedback(result.getMessage(), true);
 			return result.type;
 		}

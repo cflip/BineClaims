@@ -39,6 +39,7 @@ public class Guild extends PersistentState {
 	public BineClaimsCommandResult claimChunk(ServerPlayerEntity player) {
 		ChunkClaimData data = claimDataList.get(getChunkKey(player.chunkX, player.chunkZ));
 
+		// TODO: It might be better if BineClaimsCommandResult was not returned here
 		if (data != null) {
 			return BineClaimsCommandResult.CLAIM_ALREADY_CLAIMED;
 		} else {
