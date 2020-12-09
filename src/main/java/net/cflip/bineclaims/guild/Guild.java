@@ -6,7 +6,9 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.PersistentState;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,7 @@ public class Guild extends PersistentState {
 	}
 
 	public void claimChunk(ServerPlayerEntity player) {
-		if (!hasClaim(player.chunkX, player.chunkZ)) {
+		if (!hasClaim(player.chunkX, player.chunkZ, player.getServerWorld().getRegistryKey())) {
 			claims.add(new ChunkClaim(player));
 			setDirty(true);
 		}
@@ -48,8 +50,8 @@ public class Guild extends PersistentState {
 		return members.contains(player.getUuid());
 	}
 
-	public boolean hasClaim(int chunkX, int chunkZ) {
-		return claims.stream().anyMatch(chunk -> chunk.isWithinBounds(chunkX, chunkZ));
+	public boolean hasClaim(int chunkX, int chunkZ, RegistryKey<World> dimension) {
+		return claims.stream().anyMatch(chunk -> chunk.isWithinBounds(chunkX, chunkZ, dimension));
 	}
 
 	@Override

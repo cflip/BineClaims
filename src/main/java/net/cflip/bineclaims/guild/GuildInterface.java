@@ -3,6 +3,8 @@ package net.cflip.bineclaims.guild;
 import net.cflip.bineclaims.BineClaims;
 import net.cflip.bineclaims.command.BineClaimsCommandResult;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 
 import java.util.Optional;
 
@@ -35,7 +37,7 @@ public class GuildInterface {
 	}
 
 	public static BineClaimsCommandResult claimChunk(ServerPlayerEntity player) {
-		if (BineClaims.guildManager.hasClaim(player.chunkX, player.chunkZ)) {
+		if (BineClaims.guildManager.hasClaim(player.chunkX, player.chunkZ, player.getServerWorld().getRegistryKey())) {
 			return BineClaimsCommandResult.CLAIM_ALREADY_CLAIMED;
 		}
 
@@ -48,8 +50,8 @@ public class GuildInterface {
 		}
 	}
 
-	public static BineClaimsCommandResult getOwner(int chunkX, int chunkZ) {
-		Optional<Guild> chunkOwner = BineClaims.guildManager.getGuildByChunk(chunkX, chunkZ);
+	public static BineClaimsCommandResult getOwner(int chunkX, int chunkZ, RegistryKey<World> dimension) {
+		Optional<Guild> chunkOwner = BineClaims.guildManager.getGuildByChunk(chunkX, chunkZ, dimension);
 
 		if (chunkOwner.isPresent()) {
 			BineClaimsCommandResult.OWNER_RESPONSE.argument = chunkOwner.get().name;

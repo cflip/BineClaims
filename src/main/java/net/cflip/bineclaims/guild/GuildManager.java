@@ -2,7 +2,9 @@ package net.cflip.bineclaims.guild;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.PersistentStateManager;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +33,8 @@ public class GuildManager {
 		guilds.add(newGuild);
 	}
 
-	public boolean hasClaim(int chunkX, int chunkZ) {
-		return guilds.stream().anyMatch(guild -> guild.hasClaim(chunkX, chunkZ));
+	public boolean hasClaim(int chunkX, int chunkZ, RegistryKey<World> dimension) {
+		return guilds.stream().anyMatch(guild -> guild.hasClaim(chunkX, chunkZ, dimension));
 	}
 
 	public boolean canInteract(ServerPlayerEntity player, BlockPos blockPos) {
@@ -40,7 +42,7 @@ public class GuildManager {
 			int chunkX = (int) Math.floor(blockPos.getX() / 16f);
 			int chunkZ = (int) Math.floor(blockPos.getZ() / 16f);
 
-			if (i.hasClaim(chunkX, chunkZ) && !i.isMember(player)) {
+			if (i.hasClaim(chunkX, chunkZ, player.getServerWorld().getRegistryKey()) && !i.isMember(player)) {
 				return false;
 			}
 		}
@@ -55,8 +57,8 @@ public class GuildManager {
 		return guilds.stream().filter(guild -> guild.name.equals(name)).findFirst();
 	}
 
-	public Optional<Guild> getGuildByChunk(int chunkX, int chunkZ) {
-		return guilds.stream().filter(guild -> guild.hasClaim(chunkX, chunkZ)).findFirst();
+	public Optional<Guild> getGuildByChunk(int chunkX, int chunkZ, RegistryKey<World> dimension) {
+		return guilds.stream().filter(guild -> guild.hasClaim(chunkX, chunkZ, dimension)).findFirst();
 	}
 
 	public List<String> getGuildNames() {

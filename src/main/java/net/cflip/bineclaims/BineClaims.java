@@ -31,7 +31,7 @@ public class BineClaims implements ModInitializer {
 				} else {
 					int chunkX = (int) Math.floor(blockPos.getX() / 16f);
 					int chunkZ = (int) Math.floor(blockPos.getZ() / 16f);
-					Optional<Guild> chunkOwner = guildManager.getGuildByChunk(chunkX, chunkZ);
+					Optional<Guild> chunkOwner = guildManager.getGuildByChunk(chunkX, chunkZ, world.getRegistryKey());
 
 					chunkOwner.ifPresent(guild ->
 						serverPlayer.sendMessage(new TranslatableText("event.block_break.blocked", guild.name).formatted(Formatting.RED), true));
@@ -50,7 +50,7 @@ public class BineClaims implements ModInitializer {
 				} else {
 					int chunkX = (int) Math.floor(blockPos.getBlockPos().getX() / 16f);
 					int chunkZ = (int) Math.floor(blockPos.getBlockPos().getZ() / 16f);
-					Optional<Guild> chunkOwner = guildManager.getGuildByChunk(chunkX, chunkZ);
+					Optional<Guild> chunkOwner = guildManager.getGuildByChunk(chunkX, chunkZ, world.getRegistryKey());
 
 					chunkOwner.ifPresent(guild ->
 						serverPlayer.sendMessage(new TranslatableText("event.block_use.blocked", guild.name).formatted(Formatting.RED), true));

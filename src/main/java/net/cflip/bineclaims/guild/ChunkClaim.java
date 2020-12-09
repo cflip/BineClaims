@@ -39,8 +39,8 @@ public class ChunkClaim {
 
 	}
 
-	public boolean isWithinBounds(int chunkX, int chunkZ) {
-		return (chunkX == this.chunkX) && (chunkZ == this.chunkZ);
+	public boolean isWithinBounds(int chunkX, int chunkZ, RegistryKey<World> dimension) {
+		return (chunkX == this.chunkX) && (chunkZ == this.chunkZ) && (this.dimension.equals(dimension));
 	}
 
 	public CompoundTag toTag(CompoundTag tag) {

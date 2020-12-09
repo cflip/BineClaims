@@ -33,7 +33,7 @@ public class BineClaimsCommand {
 
 	public static int owner(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
 		ServerPlayerEntity player = context.getSource().getPlayer();
-		BineClaimsCommandResult result = GuildInterface.getOwner(player.chunkX, player.chunkZ);
+		BineClaimsCommandResult result = GuildInterface.getOwner(player.chunkX, player.chunkZ, player.getServerWorld().getRegistryKey());
 		context.getSource().sendFeedback(result.getMessage(), false);
 		return result.type;
 	}
