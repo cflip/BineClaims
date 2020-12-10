@@ -46,6 +46,12 @@ public class Guild extends PersistentState {
 		setDirty(true);
 	}
 
+	public void removeMember(ServerPlayerEntity player) {
+		// TODO: Remove claims that belong to the player that left
+		members.remove(player.getUuid());
+		setDirty(true);
+	}
+
 	public boolean isMember(ServerPlayerEntity player) {
 		return members.contains(player.getUuid());
 	}

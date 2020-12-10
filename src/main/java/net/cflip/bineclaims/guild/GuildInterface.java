@@ -60,4 +60,15 @@ public class GuildInterface {
 
 		return BineClaimsCommandResult.OWNER_FAIL;
 	}
+
+	public static BineClaimsCommandResult leaveGuild(ServerPlayerEntity player) {
+		Optional<Guild> playerGuild = BineClaims.guildManager.getGuildByPlayer(player);
+
+		if (playerGuild.isPresent()) {
+			playerGuild.get().removeMember(player);
+			return BineClaimsCommandResult.GUILD_LEAVE_SUCCESS;
+		}
+
+		return BineClaimsCommandResult.GUILD_LEAVE_NOT_IN_GUILD;
+	}
 }

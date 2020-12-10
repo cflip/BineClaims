@@ -13,7 +13,9 @@ public enum BineClaimsCommandResult {
 	GUILD_CREATE_SUCCESS("command.guild.create.success", 1),
 	GUILD_CREATE_ALREADY_IN_GUILD("command.guild.create.already_in_guild", -1),
 	GUILD_JOIN_SUCCESS("command.guild.join.success", 1),
-	GUILD_JOIN_ALREADY_IN_GUILD("command.guild.join.already_in_guild", -1);
+	GUILD_JOIN_ALREADY_IN_GUILD("command.guild.join.already_in_guild", -1),
+	GUILD_LEAVE_SUCCESS("command.guild.leave.success", 1),
+	GUILD_LEAVE_NOT_IN_GUILD("command.guild.leave.not_in_guild", -1);
 
 	public static final int SUCCESS = 1;
 	public static final int INFO = 0;

@@ -18,6 +18,7 @@ public class BineClaimsCommand {
 			.then(CommandManager.literal("guild")
 				.then(CommandManager.literal("create").then(CommandManager.argument("name", StringArgumentType.greedyString()).executes(BineClaimsCommand::guildCreate)))
 				.then(CommandManager.literal("join").then(CommandManager.argument("guild", new GuildArgumentType()).executes(BineClaimsCommand::guildJoin)))
+				.then(CommandManager.literal("leave").executes(BineClaimsCommand::guildLeave))
 		));
 	}
 
@@ -56,6 +57,18 @@ public class BineClaimsCommand {
 
 		if (!source.getWorld().isClient) {
 			BineClaimsCommandResult result = GuildInterface.joinGuild(guild.name, source.getPlayer());
+			source.sendFeedback(result.getMessage(), true);
+			return result.type;
+		}
+
+		return 0;
+	}
+
+	public static int guildLeave(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+		ServerCommandSource source = context.getSource();
+
+		if (!source.getWorld().isClient) {
+			BineClaimsCommandResult result = GuildInterface.leaveGuild(source.getPlayer());
 			source.sendFeedback(result.getMessage(), true);
 			return result.type;
 		}
