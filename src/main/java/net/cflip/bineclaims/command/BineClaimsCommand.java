@@ -13,10 +13,15 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
+import net.minecraft.text.TranslatableText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BineClaimsCommand {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
 		dispatcher.register(CommandManager.literal("bclaims")
+			.then(CommandManager.literal("help").executes(BineClaimsCommand::help))
 			.then(CommandManager.literal("claim").executes(BineClaimsCommand::claim))
 			.then(CommandManager.literal("owner").executes(BineClaimsCommand::owner))
 			.then(CommandManager.literal("list").executes(BineClaimsCommand::listGuilds))
@@ -25,6 +30,22 @@ public class BineClaimsCommand {
 				.then(CommandManager.literal("join").then(CommandManager.argument("guild", new GuildArgumentType()).executes(BineClaimsCommand::guildJoin)))
 				.then(CommandManager.literal("leave").executes(BineClaimsCommand::guildLeave))
 		));
+	}
+
+	public static int help(CommandContext<ServerCommandSource> context) {
+		// TODO: Just trying to get this function implemented for now, eventually I'll do this in a fancy OOP way.
+		List<Text> commandList = new ArrayList<>();
+		commandList.add(Text.of("help"));
+		commandList.add(Text.of("claim"));
+		commandList.add(Text.of("owner"));
+		commandList.add(Text.of("guild create"));
+		commandList.add(Text.of("guild join"));
+		commandList.add(Text.of("guild leave"));
+
+		Text commands = Texts.join(commandList, text -> text);
+
+		context.getSource().sendFeedback(new TranslatableText("command.help.main", commands), false);
+		return 0;
 	}
 
 	public static int claim(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {

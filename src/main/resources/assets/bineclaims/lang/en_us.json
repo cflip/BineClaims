@@ -10,6 +10,13 @@
 	"command.guild.join.already_in_guild": "Cannot join guild, you are already part of %s",
 	"command.guild.leave.success": "You have left your guild!",
 	"command.guild.leave.not_in_guild": "You need to be part of a guild to leave it!",
+	"command.help.main": "Welcome to BineClaims help!\n\nHere is a list of commands you can use:\n\n%s",
+	"command.help.claim": "Claims the chunk you are currently standing in.",
+	"command.help.owner": "Prints the owner of the chunk you are currently standing in.",
+	"command.help.list": "Lists all of the guilds on the world/server.",
+	"command.help.guild.create": "Create a new guild.",
+	"command.help.guild.join": "Join an existing guild.",
+	"command.help.guild.leave": "Leave the guild you are currently in.",
 
 	"arguments.guild.not_found": "Could not find guild with name %s",
 	"arguments.guild.existing_name": "Can't create guild, the name '%s' is already taken",
