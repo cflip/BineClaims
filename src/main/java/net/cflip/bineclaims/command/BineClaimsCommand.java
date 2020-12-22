@@ -15,13 +15,23 @@ import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
 import net.minecraft.text.TranslatableText;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BineClaimsCommand {
+	private static final Map<String, Text> commandHelpMap = new HashMap<>();
+
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
+		commandHelpMap.put("claim", new TranslatableText("command.help.claim"));
+		commandHelpMap.put("owner", new TranslatableText("command.help.owner"));
+		commandHelpMap.put("list", new TranslatableText("command.help.list"));
+		commandHelpMap.put("guild", new TranslatableText("command.help.guild"));
+		commandHelpMap.put("guild create", new TranslatableText("command.help.guild.create"));
+		commandHelpMap.put("guild join", new TranslatableText("command.help.guild.join"));
+		commandHelpMap.put("guild leave", new TranslatableText("command.help.guild.leave"));
+
 		dispatcher.register(CommandManager.literal("bclaims")
-			.then(CommandManager.literal("help").executes(BineClaimsCommand::help))
+			.then(CommandManager.literal("help").then(CommandManager.argument("command", StringArgumentType.greedyString()).executes(BineClaimsCommand::helpCommand)).executes(BineClaimsCommand::help))
 			.then(CommandManager.literal("claim").executes(BineClaimsCommand::claim))
 			.then(CommandManager.literal("owner").executes(BineClaimsCommand::owner))
 			.then(CommandManager.literal("list").executes(BineClaimsCommand::listGuilds))
@@ -33,18 +43,20 @@ public class BineClaimsCommand {
 	}
 
 	public static int help(CommandContext<ServerCommandSource> context) {
-		// TODO: Just trying to get this function implemented for now, eventually I'll do this in a fancy OOP way.
-		List<Text> commandList = new ArrayList<>();
-		commandList.add(Text.of("help"));
-		commandList.add(Text.of("claim"));
-		commandList.add(Text.of("owner"));
-		commandList.add(Text.of("guild create"));
-		commandList.add(Text.of("guild join"));
-		commandList.add(Text.of("guild leave"));
-
-		Text commands = Texts.join(commandList, text -> text);
-
+		Text commands = Texts.join(commandHelpMap.keySet(), Text::of);
 		context.getSource().sendFeedback(new TranslatableText("command.help.main", commands), false);
+		return 0;
+	}
+
+	public static int helpCommand(CommandContext<ServerCommandSource> context) {
+		String argument = context.getArgument("command", String.class);
+		if (commandHelpMap.containsKey(argument)) {
+			TranslatableText desc = new TranslatableText("command.help.command_info", "/bclaims " + argument);
+			context.getSource().sendFeedback(desc.append(commandHelpMap.get(argument)), false);
+		} else {
+			Text commands = Texts.join(commandHelpMap.keySet(), Text::of);
+			context.getSource().sendFeedback(new TranslatableText("command.help.unknown", commands), false);
+		}
 		return 0;
 	}
 
