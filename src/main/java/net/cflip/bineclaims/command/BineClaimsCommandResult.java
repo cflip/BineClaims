@@ -12,6 +12,8 @@ public enum BineClaimsCommandResult {
 	OWNER_FAIL("command.owner.fail", -1),
 	GUILD_CREATE_SUCCESS("command.guild.create.success", 1),
 	GUILD_CREATE_ALREADY_IN_GUILD("command.guild.create.already_in_guild", -1),
+	GUILD_DELETE_SUCCESS("command.guild.delete.success", 1),
+	GUILD_DELETE_NOT_OWNER("command.guild.delete.not_owner", -1),
 	GUILD_JOIN_SUCCESS("command.guild.join.success", 1),
 	GUILD_JOIN_ALREADY_IN_GUILD("command.guild.join.already_in_guild", -1),
 	GUILD_LEAVE_SUCCESS("command.guild.leave.success", 1),

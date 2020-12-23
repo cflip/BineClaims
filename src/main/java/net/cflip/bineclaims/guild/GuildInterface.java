@@ -23,6 +23,20 @@ public class GuildInterface {
 		return BineClaimsCommandResult.GUILD_CREATE_SUCCESS;
 	}
 
+	public static BineClaimsCommandResult deleteGuild(ServerPlayerEntity player) {
+		Optional<Guild> optionalGuild = BineClaims.guildManager.getGuildByPlayer(player);
+
+		if (optionalGuild.isPresent()) {
+			Guild guild = optionalGuild.get();
+			if (guild.isOwner(player)) {
+				BineClaims.guildManager.deleteGuild(guild);
+				return BineClaimsCommandResult.GUILD_DELETE_SUCCESS;
+			}
+		}
+
+		return BineClaimsCommandResult.GUILD_DELETE_NOT_OWNER;
+	}
+
 	public static BineClaimsCommandResult joinGuild(String guildName, ServerPlayerEntity player) {
 		Optional<Guild> playerGuild = BineClaims.guildManager.getGuildByPlayer(player);
 
@@ -65,7 +79,13 @@ public class GuildInterface {
 		Optional<Guild> playerGuild = BineClaims.guildManager.getGuildByPlayer(player);
 
 		if (playerGuild.isPresent()) {
-			playerGuild.get().removeMember(player);
+			Guild guild = playerGuild.get();
+
+			if (guild.isOwner(player)) {
+				BineClaims.guildManager.deleteGuild(guild);
+			}
+
+			guild.removeMember(player);
 			return BineClaimsCommandResult.GUILD_LEAVE_SUCCESS;
 		}
 

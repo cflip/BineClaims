@@ -19,6 +19,7 @@ public class Guild extends PersistentState {
 	public UUID owner;
 	private final List<UUID> members = new ArrayList<>();
 	private final List<ChunkClaim> claims = new ArrayList<>();
+	private boolean isDeleted;
 
 	public Guild(int id) {
 		super("guild_" + id);
@@ -32,6 +33,15 @@ public class Guild extends PersistentState {
 		members.add(owner);
 
 		setDirty(true);
+	}
+
+	public void delete() {
+		setDirty(true);
+		isDeleted = true;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
 	}
 
 	public void claimChunk(ServerPlayerEntity player) {
@@ -56,6 +66,10 @@ public class Guild extends PersistentState {
 		return members.contains(player.getUuid());
 	}
 
+	public boolean isOwner(ServerPlayerEntity player) {
+		return player.getUuid().equals(owner);
+	}
+
 	public boolean hasClaim(int chunkX, int chunkZ, RegistryKey<World> dimension) {
 		return claims.stream().anyMatch(chunk -> chunk.isWithinBounds(chunkX, chunkZ, dimension));
 	}
@@ -64,6 +78,7 @@ public class Guild extends PersistentState {
 	public void fromTag(CompoundTag tag) {
 		name = tag.getString("name");
 		owner = tag.getUuid("owner");
+		isDeleted = tag.getBoolean("deleted");
 
 		ListTag membersTag = tag.getList("members", NbtType.INT_ARRAY);
 		for (Tag value : membersTag) {
@@ -81,6 +96,7 @@ public class Guild extends PersistentState {
 	public CompoundTag toTag(CompoundTag tag) {
 		tag.putString("name", name);
 		tag.putUuid("owner", owner);
+		tag.putBoolean("deleted", isDeleted);
 
 		ListTag membersTag = new ListTag();
 		for (int i = 0; i < members.size(); i++) {

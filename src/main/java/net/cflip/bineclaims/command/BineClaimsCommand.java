@@ -27,6 +27,7 @@ public class BineClaimsCommand {
 		commandHelpMap.put("list", new TranslatableText("command.help.list"));
 		commandHelpMap.put("guild", new TranslatableText("command.help.guild"));
 		commandHelpMap.put("guild create", new TranslatableText("command.help.guild.create"));
+		commandHelpMap.put("guild delete", new TranslatableText("command.help.guild.delete"));
 		commandHelpMap.put("guild join", new TranslatableText("command.help.guild.join"));
 		commandHelpMap.put("guild leave", new TranslatableText("command.help.guild.leave"));
 
@@ -37,6 +38,7 @@ public class BineClaimsCommand {
 			.then(CommandManager.literal("list").executes(BineClaimsCommand::listGuilds))
 			.then(CommandManager.literal("guild")
 				.then(CommandManager.literal("create").then(CommandManager.argument("name", StringArgumentType.greedyString()).executes(BineClaimsCommand::guildCreate)))
+				.then(CommandManager.literal("delete").executes(BineClaimsCommand::guildDelete))
 				.then(CommandManager.literal("join").then(CommandManager.argument("guild", new GuildArgumentType()).executes(BineClaimsCommand::guildJoin)))
 				.then(CommandManager.literal("leave").executes(BineClaimsCommand::guildLeave))
 		));
@@ -92,6 +94,17 @@ public class BineClaimsCommand {
 
 		if (!source.getWorld().isClient) {
 			BineClaimsCommandResult result = GuildInterface.createGuild(guildName, source.getPlayer());
+			source.sendFeedback(result.getMessage(), true);
+			return result.type;
+		}
+		return 0;
+	}
+
+	public static int guildDelete(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+		ServerCommandSource source = context.getSource();
+
+		if (!source.getWorld().isClient) {
+			BineClaimsCommandResult result = GuildInterface.deleteGuild(source.getPlayer());
 			source.sendFeedback(result.getMessage(), true);
 			return result.type;
 		}

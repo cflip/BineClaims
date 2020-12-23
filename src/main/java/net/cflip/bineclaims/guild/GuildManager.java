@@ -22,7 +22,7 @@ public class GuildManager {
 
 		IntStream.range(0, counter.size()).forEach(i -> {
 			Guild guild = stateManager.get(() -> new Guild(i), "guild_" + i);
-			if (guild == null) return;
+			if (guild == null || guild.isDeleted()) return;
 			guilds.add(guild);
 		});
 	}
@@ -31,6 +31,11 @@ public class GuildManager {
 		Guild newGuild = new Guild(name, counter.getNextGuildId(), owner);
 		owner.getServerWorld().getPersistentStateManager().set(newGuild);
 		guilds.add(newGuild);
+	}
+
+	public void deleteGuild(Guild guild) {
+		guild.delete();
+		guilds.remove(guild);
 	}
 
 	public boolean hasClaim(int chunkX, int chunkZ, RegistryKey<World> dimension) {
