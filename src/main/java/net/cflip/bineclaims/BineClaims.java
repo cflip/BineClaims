@@ -1,6 +1,6 @@
 package net.cflip.bineclaims;
 
-import net.cflip.bineclaims.command.BineClaimsCommand;
+import net.cflip.bineclaims.command.RootCommand;
 import net.cflip.bineclaims.guild.Guild;
 import net.cflip.bineclaims.guild.GuildManager;
 import net.fabricmc.api.ModInitializer;
@@ -61,6 +61,6 @@ public class BineClaims implements ModInitializer {
 			return ActionResult.PASS;
 		});
 
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> BineClaimsCommand.register(dispatcher));
+		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> RootCommand.register(dispatcher));
 	}
 }
